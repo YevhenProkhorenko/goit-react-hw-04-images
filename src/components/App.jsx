@@ -44,6 +44,7 @@ export default function App() {
             prevState => [...prevState, ...data],
             setPage(prevState => prevState.page + 1)
           );
+          console.log(data);
         })
         .finally(() => setLoading(false));
     } catch (error) {
