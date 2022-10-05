@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import css from 'Styles/styles.module.css';
 import PropTypes from 'prop-types';
 import { FcSearch } from 'react-icons/fc';
 import { useState } from 'react';
 
-export default function Searchbar(onSubmit) {
+export default function Searchbar({ onSubmit }) {
   const [query, setQuery] = useState('');
 
   const handleChange = e => {

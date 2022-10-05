@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import API from './API/API';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
@@ -17,53 +17,64 @@ export default function App() {
   useEffect(() => {
     setQuery({ query: '' });
   }, []);
-  
+
   useEffect(() => {
+    if (query === '') {
+      return;
+    }
+
     fetchIMG();
+    // eslint-disable-next-line
   }, [query, page]);
 
   const changeQuery = query => {
-    if (query !== query) {
+    if (!query) {
+      // setQuery(query);
       setPage(+1);
+      // setPictures([]);
     }
   };
 
   const fetchIMG = () => {
     setLoading(true);
     try {
-      API(query, page).then(data => {
-        setPictures((prevState) => [...prevState, ...data],
-        setPage(prevState=> prevState.page +1))
-      }). finally (() => setLoading(false))
+      API(query, page)
+        .then(data => {
+          setPictures(
+            prevState => [...prevState, ...data],
+            setPage(prevState => prevState.page + 1)
+          );
+        })
+        .finally(() => setLoading(false));
+    } catch (error) {
+      console.log(error);
     }
-    catch(error) {console.log(error); }
-   
-    
 
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
+    const toggleModal = () => {
+      setModalOpen(!modalOpen);
+    };
+
+    const openSelectedImage = largeImageURL => {
+      setSelectedImage(largeImageURL);
+      toggleModal();
+    };
+
+    const isImages = Boolean(pictures.length);
+    return (
+      <div>
+        <Searchbar onSubmit={changeQuery} />
+        {isImages && (
+          <ImageGallery items={pictures} clickOnImage={openSelectedImage} />
+        )}
+
+        {isImages && <Button onClick={fetchIMG} text={'Load more'} />}
+        {loading && <Loader />}
+        {modalOpen && (
+          <Modal onClose={toggleModal} largeImageURL={selectedImage} />
+        )}
+      </div>
+    );
   };
-
-  const openSelectedImage = largeImageURL => {
-    setSelectedImage(largeImageURL);
-    toggleModal();
-  };
-
-  const isImages = Boolean(pictures.length);
-  return (
-    <div>
-      <Searchbar onSubmit={changeQuery} />
-      {isImages && (
-        <ImageGallery items={pictures} clickOnImage={openSelectedImage} />
-      )}
-
-      {isImages && <Button onClick={fetchIMG} text={'Load more'} />}
-      {loading && <Loader />}
-      {modalOpen && (
-        <Modal onClose={toggleModal} largeImageURL={selectedImage} />
-      )}
-    </div>
-  );
 }
 // class App extends Component {
 //   state = {
@@ -144,4 +155,3 @@ export default function App() {
 //   }
 // }
 // export default App;
-
