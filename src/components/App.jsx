@@ -15,10 +15,6 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState('');
 
   useEffect(() => {
-    setQuery('');
-  }, []);
-
-  useEffect(() => {
     if (query === '') {
       return;
     }
@@ -37,7 +33,6 @@ export default function App() {
       }
     };
     fetchImg();
-    // eslint-disable-next-line
   }, [query, page]);
 
   const changeQuery = newQuery => {

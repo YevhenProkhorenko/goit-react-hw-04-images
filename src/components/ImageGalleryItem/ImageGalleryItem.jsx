@@ -24,7 +24,9 @@ ImageGalleryItem.defaultProps = {
 };
 ImageGalleryItem.propTypes = {
   clickOnImage: PropTypes.func.isRequired,
-  largeImageURL: PropTypes.string.isRequired,
-  webformatURL: PropTypes.string.isRequired,
-  tags: PropTypes.string.isRequired,
+  item: PropTypes.shape({
+    largeImageURL: PropTypes.string.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+  }),
 };

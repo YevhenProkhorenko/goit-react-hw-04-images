@@ -7,18 +7,17 @@ const modalRoot = document.getElementById('modal-root');
 
 export default function Modal({ onClose, largeImageURL }) {
   useEffect(() => {
+    const closeOnEsc = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
     window.addEventListener('keydown', closeOnEsc);
     return () => {
       window.removeEventListener('keydown', closeOnEsc);
     };
-    // eslint-disable-next-line
   }, [onClose]);
 
-  const closeOnEsc = e => {
-    if (e.code === 'Escape') {
-      onClose();
-    }
-  };
   const closeOnClick = e => {
     e.preventDefault();
     if (e.currentTarget === e.target) {
@@ -36,7 +35,7 @@ export default function Modal({ onClose, largeImageURL }) {
   );
 }
 
-modalRoot.propTypes = {
+Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   largeImageURL: PropTypes.string.isRequired,
 };
